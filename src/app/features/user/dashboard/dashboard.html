@@ -1,0 +1,58 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="logo">
+      <mat-icon>sports_esports</mat-icon>
+      <h1>Noticias Nintendo</h1>
+    </div>
+    <nav class="nav-menu">
+      <a href="#" class="nav-link">
+        <mat-icon>home</mat-icon>
+        Inicio
+      </a>
+      <a href="#" class="nav-link">
+        <mat-icon>article</mat-icon>
+        Noticias
+      </a>
+      <a href="#" class="nav-link">
+        <mat-icon>person</mat-icon>
+        Perfil
+      </a>
+    </nav>
+    <div class="user-section">
+      <span>Hola, {{ userName }}</span>
+      <button (click)="logout()" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+        Cerrar sesión
+      </button>
+    </div>
+  </header>
+
+  <div class="dashboard-body">
+    <aside class="sidebar">
+      <div class="sidebar-content">
+        <h3>Enlaces externos</h3>
+        <nav class="external-links">
+          <a
+            href="https://www.youtube.com/nintendo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="external-link"
+          >
+            <mat-icon>play_circle</mat-icon>
+            Nintendo YouTube
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="dashboard-content">
+      <section class="welcome-section">
+        <h2>Dashboard de usuarios</h2>
+      </section>
+    </main>
+  </div>
+
+  <footer class="dashboard-footer">
+    <p>&copy; 2026 Noticias Nintendo. Todos los derechos reservados.</p>
+  </footer>
+</div>

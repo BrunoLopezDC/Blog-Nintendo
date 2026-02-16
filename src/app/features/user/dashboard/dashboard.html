@@ -4,18 +4,14 @@
       <mat-icon>sports_esports</mat-icon>
       <h1>Noticias Nintendo</h1>
     </div>
+
+    <!-- Barra de búsqueda -->
+    <app-search-bar (searchQuery)="onSearch($event)"></app-search-bar>
+
     <nav class="nav-menu">
       <a href="#" class="nav-link">
         <mat-icon>home</mat-icon>
         Inicio
-      </a>
-      <a href="#" class="nav-link">
-        <mat-icon>article</mat-icon>
-        Noticias
-      </a>
-      <a href="#" class="nav-link">
-        <mat-icon>person</mat-icon>
-        Perfil
       </a>
     </nav>
     <div class="user-section">

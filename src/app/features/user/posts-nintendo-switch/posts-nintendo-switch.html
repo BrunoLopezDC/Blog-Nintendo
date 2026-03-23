@@ -1,0 +1,81 @@
+<div class="page-wrapper">
+  <header class="page-header">
+    <div class="title-wrapper">
+      <i class="pi pi-tablet header-icon"></i>
+      <h2>Nintendo Switch</h2>
+    </div>
+    <p class="subtitle">Descubre las últimas noticias y lanzamientos de la consola híbrida.</p>
+  </header>
+
+  <div class="posts-feed">
+    <p-card styleClass="full-post-card">
+      <div class="post-header">
+        <h3 class="post-title">Nuevo título AAA anunciado para este año</h3>
+        <div class="post-meta">
+          <p-tag value="Juegos" styleClass="category-tag"></p-tag>
+          <span class="post-date"><i class="pi pi-calendar"></i> 22 Mar 2026</span>
+          <span class="post-author"><i class="pi pi-user"></i> Admin</span>
+        </div>
+      </div>
+
+      <div class="post-image-container">
+        <i class="pi pi-image placeholder-icon"></i>
+      </div>
+
+      <div class="post-content">
+        <p>La información oficial será revelada pronto en un Direct. El administrador publicará aquí el texto completo de la noticia sin truncar. Este es un bloque de texto que mostrará todo el detalle del post, con sus párrafos y formato.</p>
+        <p>Los rumores apuntan a que será uno de los juegos más grandes de la generación, aprovechando al máximo las capacidades híbridas de la consola. Mantente atento para más actualizaciones.</p>
+        
+        <div class="post-rating-section">
+          <span class="rating-label">¿Qué te pareció esta noticia?</span>
+          <p-rating [(ngModel)]="userRating"></p-rating>
+        </div>
+      </div>
+
+      <p-divider styleClass="post-divider"></p-divider>
+
+      <div class="comments-section">
+        <h4 class="comments-title"><i class="pi pi-comments"></i> Comentarios (2)</h4>
+
+        <div class="comments-list">
+          <div class="comment-item">
+            <p-avatar label="JP" shape="circle" styleClass="comment-avatar"></p-avatar>
+            <div class="comment-body">
+              <div class="comment-meta">
+                <strong>Juan Pérez</strong>
+                <span class="comment-time">Hace 2 horas</span>
+              </div>
+              <p class="comment-text">¡Qué gran noticia! Ya quiero ver el Direct para confirmar si los rumores son ciertos.</p>
+            </div>
+          </div>
+
+          <div class="comment-item">
+            <p-avatar label="MG" shape="circle" styleClass="comment-avatar avatar-alt"></p-avatar>
+            <div class="comment-body">
+              <div class="comment-meta">
+                <strong>María García</strong>
+                <span class="comment-time">Hace 1 hora</span>
+              </div>
+              <p class="comment-text">Ojalá muestren gameplay real y no solo cinemáticas. Llevo esperando esto desde el año pasado.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="new-comment-box">
+          <p-avatar label="BR" shape="circle" styleClass="current-user-avatar"></p-avatar>
+          <div class="input-wrapper">
+            <textarea 
+              pTextarea 
+              rows="2" 
+              placeholder="Escribe tu opinión sobre esta noticia..." 
+              class="comment-textarea">
+            </textarea>
+            <div class="comment-actions">
+              <p-button label="Comentar" icon="pi pi-send" size="small" [rounded]="true"></p-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Dashboard } from './dashboard';
+import { TermsOfUse } from './terms-of-use';
 
-describe('Dashboard', () => {
-  let component: Dashboard;
-  let fixture: ComponentFixture<Dashboard>;
+describe('TermsOfUse', () => {
+  let component: TermsOfUse;
+  let fixture: ComponentFixture<TermsOfUse>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Dashboard]
+      imports: [TermsOfUse]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Dashboard);
+    fixture = TestBed.createComponent(TermsOfUse);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

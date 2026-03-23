@@ -10,7 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-posts-wii-u',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,9 +23,9 @@ import { RatingModule } from 'primeng/rating';
     TagModule,
     RatingModule
   ],
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  templateUrl: './posts-wii-u.html',
+  styleUrls: ['./posts-wii-u.css']
 })
-export class Dashboard {
+export class PostsWiiU {
   userRating = signal<number>(0);
 }

@@ -1,0 +1,120 @@
+<div class="layout-container">
+  
+  <header class="layout-header">
+    <div class="left">
+      <i class="pi pi-discord header-icon"></i>
+      <h1>Noticias Nintendo</h1>
+    </div>
+
+    <div class="right">
+      <span class="user-greeting">Hola, <strong>{{ userName }}</strong></span>
+      <button class="logout-btn" pRipple (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        <span>Salir</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="layout-body">
+    
+    <aside class="desktop-sidebar" [class.collapsed]="isSidebarCollapsed">
+      
+      <div class="sidebar-toggle-wrapper">
+        <button
+          type="button"
+          class="collapse-btn"
+          pRipple
+          (click)="toggleSidebar()"
+          [pTooltip]="isSidebarCollapsed ? 'Expandir menú' : 'Colapsar menú'"
+          tooltipPosition="right"
+        >
+          <i class="pi" [ngClass]="isSidebarCollapsed ? 'pi-bars' : 'pi-angle-left'"></i>
+        </button>
+      </div>
+
+      <div class="menu-section">
+        @if (!isSidebarCollapsed) {
+          <h3 class="section-title">Navegación</h3>
+        }
+        
+        <nav class="clean-nav">
+          @for (item of internalMenu; track item.label) {
+            <a
+              pRipple
+              class="sidebar-link"
+              [routerLink]="item.routerLink"
+              routerLinkActive="active-link"
+              [routerLinkActiveOptions]="{ exact: true }"
+              [pTooltip]="isSidebarCollapsed ? item.label : ''"
+              tooltipPosition="right"
+            >
+              <i class="icon" [class]="item.icon"></i>
+              @if (!isSidebarCollapsed) {
+                <span class="label">{{ item.label }}</span>
+              }
+            </a>
+          }
+        </nav>
+      </div>
+
+      <div class="menu-section external-section">
+        @if (!isSidebarCollapsed) {
+          <h3 class="section-title">Enlaces externos</h3>
+        }
+        
+        <nav class="clean-nav">
+          @for (item of externalMenu; track item.label) {
+            <a
+              pRipple
+              class="sidebar-link external-link"
+              [href]="item.url"
+              [target]="item.target"
+              rel="noopener noreferrer"
+              [pTooltip]="isSidebarCollapsed ? item.label : ''"
+              tooltipPosition="right"
+            >
+              <i class="icon" [class]="item.icon"></i>
+              @if (!isSidebarCollapsed) {
+                <span class="label">{{ item.label }}</span>
+                <i class="pi pi-external-link external-indicator"></i>
+              }
+            </a>
+          }
+        </nav>
+      </div>
+
+    </aside>
+
+    <main class="content">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+
+      <footer class="layout-footer">
+        <div class="footer-content">
+          
+          <div class="footer-section">
+            <span class="copyright">© 2026 Noticias Nintendo. Todos los derechos reservados.</span>
+          </div>
+          
+          <div class="footer-section contact-social">
+            <a href="mailto:hola@noticiasnintendo.com" class="contact-link" pTooltip="Envíanos un correo" tooltipPosition="top">
+              <i class="pi pi-envelope"></i> hola&#64;noticiasnintendo.com
+            </a>
+            <div class="social-buttons">
+              <a href="#" class="social-btn" pTooltip="Síguenos en X" tooltipPosition="top"><i class="pi pi-twitter"></i></a>
+              <a href="#" class="social-btn" pTooltip="Síguenos en Facebook" tooltipPosition="top"><i class="pi pi-facebook"></i></a>
+              <a href="#" class="social-btn" pTooltip="Síguenos en Instagram" tooltipPosition="top"><i class="pi pi-instagram"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-section footer-links">
+            <a routerLink="/terms-of-use">Términos de uso</a>
+          </div>
+
+        </div>
+      </footer>
+    </main>
+    
+  </div>
+</div>

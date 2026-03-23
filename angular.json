@@ -5,6 +5,26 @@
     "packageManager": "npm"
   },
   "newProjectRoot": "projects",
+  "schematics": {
+    "@schematics/angular:component": {
+      "skipTests": true
+    },
+    "@schematics/angular:service": {
+      "skipTests": true
+    },
+    "@schematics/angular:directive": {
+      "skipTests": true
+    },
+    "@schematics/angular:pipe": {
+      "skipTests": true
+    },
+    "@schematics/angular:guard": {
+      "skipTests": true
+    },
+    "@schematics/angular:interceptor": {
+      "skipTests": true
+    }
+  },
   "projects": {
     "noticias-nintendo-frontend": {
       "projectType": "application",
@@ -26,7 +46,8 @@
             ],
             "styles": [
               "src/material-theme.scss",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/primeicons/primeicons.css"
             ],
             "server": "src/main.server.ts",
             "outputMode": "server",

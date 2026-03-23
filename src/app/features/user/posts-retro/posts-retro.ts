@@ -10,7 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-posts-retro',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,9 +23,9 @@ import { RatingModule } from 'primeng/rating';
     TagModule,
     RatingModule
   ],
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  templateUrl: './posts-retro.html',
+  styleUrls: ['./posts-retro.css']
 })
-export class Dashboard {
+export class PostsRetro {
   userRating = signal<number>(0);
 }

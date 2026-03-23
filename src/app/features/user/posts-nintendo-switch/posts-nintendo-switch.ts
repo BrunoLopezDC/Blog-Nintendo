@@ -10,7 +10,7 @@ import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-posts-nintendo-switch',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,9 +23,9 @@ import { RatingModule } from 'primeng/rating';
     TagModule,
     RatingModule
   ],
-  templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css']
+  templateUrl: './posts-nintendo-switch.html',
+  styleUrls: ['./posts-nintendo-switch.css']
 })
-export class Dashboard {
+export class PostsNintendoSwitch {
   userRating = signal<number>(0);
 }

@@ -1,0 +1,81 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-left">
+      <h1><i class="pi pi-file-edit"></i> Gestión de Posts</h1>
+      <p>Administrá las noticias, revisá sus estadísticas y creá nuevo contenido.</p>
+    </div>
+    <div class="header-right">
+      <p-button label="Nuevo Post" icon="pi pi-plus" [rounded]="true"></p-button>
+    </div>
+  </div>
+
+  <p-card styleClass="admin-card">
+    <div class="table-toolbar">
+      <div class="search-box">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" [(ngModel)]="searchText" placeholder="Buscar por título o categoría..." />
+      </div>
+    </div>
+
+    <p-table 
+      [value]="posts()" 
+      [paginator]="true" 
+      [rows]="5" 
+      [rowsPerPageOptions]="[5, 10, 20]"
+      styleClass="p-datatable-sm modern-admin-table"
+      responsiveLayout="scroll"
+    >
+      <ng-template #header>
+        <tr>
+          <th>Título</th>
+          <th>Categoría</th>
+          <th class="text-center">Estado</th>
+          <th class="text-center">Calificación</th>
+          <th class="text-center"><i class="pi pi-comments" pTooltip="Comentarios"></i></th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-post>
+        <tr class="table-row-hover">
+          <td>
+            <div class="post-info">
+              <strong>{{ post.titulo }}</strong>
+              <small>{{ post.fecha | date:'dd MMM yyyy' }}</small>
+            </div>
+          </td>
+          <td><span class="cat-label">{{ post.categoria }}</span></td>
+          <td class="text-center">
+            <p-tag [value]="post.estado" [severity]="getSeverity(post.estado)"></p-tag>
+          </td>
+          <td class="text-center">
+            @if (post.estado === 'Publicado') {
+              <p-rating [(ngModel)]="post.rating" [readonly]="true"></p-rating>
+            } @else {
+              <span class="text-muted">-</span>
+            }
+          </td>
+          <td class="text-center">
+            <p-tag [value]="post.comentarios.toString()" severity="info" [rounded]="true"></p-tag>
+          </td>
+          <td class="text-center">
+            <div class="action-buttons">
+              <p-button icon="pi pi-pencil" severity="info" [text]="true" [rounded]="true" pTooltip="Editar"></p-button>
+              <p-button icon="pi pi-chart-line" severity="success" [text]="true" [rounded]="true" pTooltip="Ver Estadísticas detalladas"></p-button>
+              <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" pTooltip="Eliminar"></p-button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template #empty>
+        <tr>
+          <td colspan="6" class="empty-state">
+            <i class="pi pi-folder-open"></i>
+            <p>No hay posts creados aún.</p>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>

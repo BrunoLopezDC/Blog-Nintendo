@@ -16,7 +16,6 @@
   align-items: center;
 }
 
-/* ==================== ENCABEZADO ==================== */
 .page-header {
   width: 100%;
   max-width: 800px;
@@ -50,7 +49,6 @@
   margin: 0;
 }
 
-/* ==================== FEED DE NOTICIAS ==================== */
 .posts-feed {
   width: 100%;
   max-width: 800px;
@@ -71,7 +69,6 @@
   padding: 0;
 }
 
-/* --- HEADER DEL POST --- */
 .post-header {
   padding: 2rem 2rem 1.5rem 2rem;
 }
@@ -109,7 +106,6 @@
   padding: 0.25rem 0.75rem;
 }
 
-/* --- IMAGEN DEL POST --- */
 .post-image-container {
   width: 100%;
   aspect-ratio: 21 / 9;
@@ -126,7 +122,6 @@
   color: #cbd5e1;
 }
 
-/* --- CONTENIDO DEL POST --- */
 .post-content {
   padding: 2rem;
   color: var(--text-body);
@@ -138,7 +133,6 @@
   margin: 0 0 1.25rem 0;
 }
 
-/* --- CALIFICACIÓN DE ESTRELLAS --- */
 .post-rating-section {
   display: flex;
   align-items: center;
@@ -162,7 +156,7 @@
 
 :host ::ng-deep .p-rating .p-rating-icon.p-rating-icon-active,
 :host ::ng-deep .p-rating .p-rating-icon:hover {
-  color: #f59e0b !important; /* Dorado */
+  color: #f59e0b !important;
   transform: scale(1.1);
 }
 
@@ -171,7 +165,6 @@
   opacity: 0.6;
 }
 
-/* ==================== SECCIÓN DE COMENTARIOS ==================== */
 .comments-section {
   padding: 2rem;
   background-color: #f8fafc;
@@ -192,7 +185,6 @@
   color: var(--nintendo-red);
 }
 
-/* --- LISTA DE COMENTARIOS --- */
 .comments-list {
   display: flex;
   flex-direction: column;
@@ -251,7 +243,6 @@
   line-height: 1.5;
 }
 
-/* --- NUEVO COMENTARIO --- */
 .new-comment-box {
   display: flex;
   gap: 1rem;

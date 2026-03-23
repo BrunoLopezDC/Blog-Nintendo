@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// PrimeNG
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -8,63 +10,98 @@ import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+
+// Repositorios
+import { UserRepository } from '../../../data/repositories/user.repository';
+import { AuthRepository } from '../../../data/repositories/auth.repository';
 
 @Component({
   selector: 'app-manage-users',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    TableModule,
-    ButtonModule,
-    TagModule,
-    TooltipModule,
-    InputTextModule,
-    CardModule,
-    AvatarModule
+    CommonModule, FormsModule, TableModule, ButtonModule, TagModule,
+    TooltipModule, InputTextModule, CardModule, AvatarModule,
+    ConfirmDialogModule, ToastModule
   ],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './manage-users.html',
-  styleUrls: ['./manage-users.css'], // Usamos el mismo CSS que en posts
+  styleUrls: ['./manage-users.css'], 
 })
-export class ManageUsers {
+export class ManageUsers implements OnInit {
   searchText = signal<string>('');
+  users = signal<any[]>([]);
+  isLoading = signal<boolean>(false);
+  currentUserId: string = '';
 
-  users = signal([
-    {
-      id: 1,
-      nombre: 'Juan Pérez',
-      correo: 'juan.perez@email.com',
-      rol: 'Usuario',
-      estado: 'Activo',
-      fechaRegistro: new Date('2026-01-15')
-    },
-    {
-      id: 2,
-      nombre: 'María García',
-      correo: 'maria.g@email.com',
-      rol: 'Editor',
-      estado: 'Activo',
-      fechaRegistro: new Date('2026-02-10')
-    },
-    {
-      id: 3,
-      nombre: 'Troll Nintendo',
-      correo: 'troll@email.com',
-      rol: 'Usuario',
-      estado: 'Suspendido',
-      fechaRegistro: new Date('2026-03-01')
-    }
-  ]);
+  filteredUsers = computed(() => {
+    const term = this.searchText().toLowerCase();
+    return this.users().filter(u => 
+      u.nombre?.toLowerCase().includes(term) || 
+      u.correo?.toLowerCase().includes(term)
+    );
+  });
 
-  getRoleSeverity(rol: string): 'success' | 'info' | 'warn' {
-    switch (rol) {
-      case 'Admin': return 'danger' as any; // Trick para usar un color fuerte
-      case 'Editor': return 'warn';
-      default: return 'info';
+  constructor(
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private userRepo: UserRepository,
+    private authRepo: AuthRepository
+  ) {}
+
+  async ngOnInit() {
+    // Usamos el repositorio limpio que ya tenías creado
+    const user = await this.authRepo.obtenerUsuarioActual();
+    if (user) {
+      this.currentUserId = user.id;
     }
+    this.cargarUsuarios();
+  }
+
+  async cargarUsuarios() {
+    this.isLoading.set(true);
+    const { data, error } = await this.userRepo.obtenerUsuarios();
+    if (!error) {
+      this.users.set(data || []);
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo conectar con la base de datos' });
+    }
+    this.isLoading.set(false);
+  }
+
+  getRoleSeverity(rol: string): 'danger' | 'warn' | 'info' {
+    return rol === 'Admin' ? 'danger' : 'info';
   }
 
   getStatusSeverity(estado: string): 'success' | 'danger' {
     return estado === 'Activo' ? 'success' : 'danger';
+  }
+
+  toggleUserStatus(user: any) {
+    if (user.id === this.currentUserId) {
+      this.messageService.add({ severity: 'warn', summary: 'Acción bloqueada', detail: 'No te puedes suspender a ti mismo :p.' });
+      return;
+    }
+
+    const esActivo = user.estado === 'Activo';
+    const nuevoEstado = esActivo ? 'Suspendido' : 'Activo';
+
+    this.confirmationService.confirm({
+      message: `¿Estás seguro que quieres ${esActivo ? 'suspender' : 'reactivar'} a "${user.nombre}"?`,
+      header: 'Confirmar Acción',
+      icon: esActivo ? 'pi pi-ban' : 'pi pi-check-circle',
+      acceptLabel: 'Confirmar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: esActivo ? 'p-button-danger' : 'p-button-success',
+      accept: async () => {
+        const { error } = await this.userRepo.actualizarEstadoUsuario(user.id, nuevoEstado);
+        if (!error) {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: `Usuario puesto en estado: ${nuevoEstado}` });
+          this.cargarUsuarios();
+        }
+      }
+    });
   }
 }

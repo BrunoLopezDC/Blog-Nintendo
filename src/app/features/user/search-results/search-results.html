@@ -1,10 +1,10 @@
 <div class="page-wrapper">
   <header class="page-header">
     <div class="title-wrapper">
-      <i class="pi pi-tablet header-icon"></i>
-      <h2>Nintendo Switch</h2>
+      <i class="pi pi-search header-icon"></i>
+      <h2>Resultados para: "{{ searchTerm() }}"</h2>
     </div>
-    <p class="subtitle">Descubre las últimas noticias y lanzamientos de la consola híbrida.</p>
+    <p class="subtitle">Encontramos {{ posts().length }} noticias que coinciden con tu búsqueda.</p>
   </header>
 
   <div class="posts-feed">
@@ -42,7 +42,7 @@
           <h4 class="comments-title">
             <i class="pi pi-comments"></i> Comentarios ({{ post.comentarios?.length || 0 }})
           </h4>
-
+          
           <div class="comments-list">
             @for (com of post.comentarios; track com.id) {
               <div class="comment-item">
@@ -66,7 +66,7 @@
                 rows="2" 
                 [ngModel]="comentarioTemporal()[post.id]" 
                 (input)="onInputComment(post.id, $event)"
-                placeholder="Escribe tu opinión sobre esta noticia..." 
+                placeholder="Escribe tu opinión..." 
                 class="comment-textarea">
               </textarea>
               <div class="comment-actions">
@@ -78,8 +78,9 @@
       </p-card>
     } @empty {
       <div class="empty-state">
-        <i class="pi pi-info-circle"></i>
-        <p>No hay noticias publicadas para Nintendo Switch aún.</p>
+        <i class="pi pi-search-plus"></i>
+        <p>No encontramos nada con <strong>"{{ searchTerm() }}"</strong>.</p>
+        <p><small>Probá con otras palabras clave (ej: "Zelda", "Mario", "Direct").</small></p>
       </div>
     }
   </div>

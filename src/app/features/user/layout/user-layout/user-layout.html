@@ -2,8 +2,21 @@
   
   <header class="layout-header">
     <div class="left">
-      <i class="pi pi-discord header-icon"></i>
-      <h1>Noticias Nintendo</h1>
+      <img src="assets/images/logo-noticias-nintendo.png" alt="Noticias Nintendo Logo" class="header-logo" />
+      <h1>Switchando</h1>
+    </div>
+
+    <div class="center-search">
+      <div class="header-search-box">
+        <i class="pi pi-search"></i>
+        <input 
+          pInputText 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          (keyup.enter)="onSearch()" 
+          placeholder="Buscar juegos, consolas o noticias..." 
+        />
+      </div>
     </div>
 
     <div class="right">
@@ -18,7 +31,6 @@
   <div class="layout-body">
     
     <aside class="desktop-sidebar" [class.collapsed]="isSidebarCollapsed">
-      
       <div class="sidebar-toggle-wrapper">
         <button
           type="button"
@@ -36,7 +48,6 @@
         @if (!isSidebarCollapsed) {
           <h3 class="section-title">Navegación</h3>
         }
-        
         <nav class="clean-nav">
           @for (item of internalMenu; track item.label) {
             <a
@@ -61,7 +72,6 @@
         @if (!isSidebarCollapsed) {
           <h3 class="section-title">Enlaces externos</h3>
         }
-        
         <nav class="clean-nav">
           @for (item of externalMenu; track item.label) {
             <a
@@ -82,7 +92,6 @@
           }
         </nav>
       </div>
-
     </aside>
 
     <main class="content">
@@ -92,11 +101,9 @@
 
       <footer class="layout-footer">
         <div class="footer-content">
-          
           <div class="footer-section">
             <span class="copyright">© 2026 Noticias Nintendo. Todos los derechos reservados.</span>
           </div>
-          
           <div class="footer-section contact-social">
             <a href="mailto:hola@noticiasnintendo.com" class="contact-link" pTooltip="Envíanos un correo" tooltipPosition="top">
               <i class="pi pi-envelope"></i> hola&#64;noticiasnintendo.com
@@ -107,11 +114,9 @@
               <a href="#" class="social-btn" pTooltip="Síguenos en Instagram" tooltipPosition="top"><i class="pi pi-instagram"></i></a>
             </div>
           </div>
-
           <div class="footer-section footer-links">
             <a routerLink="/terms-of-use">Términos de uso</a>
           </div>
-
         </div>
       </footer>
     </main>

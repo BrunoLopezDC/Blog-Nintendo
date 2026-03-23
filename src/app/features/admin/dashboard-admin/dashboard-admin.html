@@ -1,1 +1,50 @@
-<p>dashboard-admin works!</p>
+<div class="page-wrapper">
+  <div class="admin-feed">
+    <p-card styleClass="full-post-card">
+      <div class="post-header admin-welcome-header">
+        <div class="title-wrapper">
+          <i class="pi pi-cog header-icon"></i>
+          <h2 class="post-title">Panel de Control Administrativo</h2>
+        </div>
+        <p class="subtitle">Bienvenido al centro de gestión de contenido. Desde aquí podrás supervisar la plataforma y asegurar la calidad de cada publicación.</p>
+      </div>
+      <div class="post-content">
+        <h3 class="section-subtitle">Protocolo de Administración</h3>
+        <p>Como administrador, tu responsabilidad es mantener el sitio actualizado y ordenado. Para asegurar la mejor experiencia a los usuarios de <strong>Noticias Nintendo</strong>, seguí estas pautas fundamentales:</p>
+        
+        <p-divider styleClass="post-divider"></p-divider>
+
+        <ul class="admin-rules-list">
+          <li>
+            <i class="pi pi-exclamation-circle"></i>
+            <div>
+              <strong>Respetar las Categorías:</strong> Cada noticia debe ir en su lugar. No publiques rumores de Switch 2 en la sección Retro ni viceversa.
+            </div>
+          </li>
+          <li>
+            <i class="pi pi-image"></i>
+            <div>
+              <strong>Portadas de Calidad:</strong> Es obligatorio subir una imagen al Storage de Supabase para cada post. Evitá dejar noticias sin imagen.
+            </div>
+          </li>
+          <li>
+            <i class="pi pi-pencil"></i>
+            <div>
+              <strong>Formato de Texto:</strong> Usá el editor para separar párrafos y destacar información. Un post bien escrito se lee mucho más.
+            </div>
+          </li>
+          <li>
+            <i class="pi pi-shield"></i>
+            <div>
+              <strong>Moderación de Comentarios:</strong> Revisá periódicamente las interacciones para mantener un ambiente sano en la comunidad.
+            </div>
+          </li>
+        </ul>
+
+        <div class="admin-actions-footer">
+          <p-button label="Ir a Gestión de Posts" icon="pi pi-file-edit" [rounded]="true" routerLink="/admin/manage-posts"></p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

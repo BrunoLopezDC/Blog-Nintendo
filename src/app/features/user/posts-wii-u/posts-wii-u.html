@@ -8,44 +8,79 @@
   </header>
 
   <div class="posts-feed">
-    <p-card styleClass="full-post-card">
-      <div class="post-header">
-        <h3 class="post-title">El legado de la Wii U que sobrevive hoy</h3>
-        <div class="post-meta">
-          <p-tag value="Especial" styleClass="category-tag"></p-tag>
-          <span class="post-date"><i class="pi pi-calendar"></i> 18 Mar 2026</span>
-          <span class="post-author"><i class="pi pi-user"></i> Admin</span>
+    @for (post of posts(); track post.id) {
+      <p-card styleClass="full-post-card">
+        <div class="post-header">
+          <h3 class="post-title">{{ post.titulo }}</h3>
+          <div class="post-meta">
+            <p-tag [value]="post.categoria" styleClass="category-tag"></p-tag>
+            <span class="post-date"><i class="pi pi-calendar"></i> {{ post.creado_en | date:'dd MMM yyyy' }}</span>
+            <span class="post-author"><i class="pi pi-user"></i> {{ post.perfiles?.nombre || 'Admin' }}</span>
+          </div>
         </div>
-      </div>
 
-      <div class="post-image-container">
-        <i class="pi pi-image placeholder-icon"></i>
-      </div>
-
-      <div class="post-content">
-        <p>A pesar de sus ventas, la Wii U nos dejó juegos increíbles. Aquí se redactará un artículo sobre cómo sentó las bases para el éxito actual.</p>
-        
-        <div class="post-rating-section">
-          <span class="rating-label">¿Qué te pareció esta noticia?</span>
-          <p-rating [(ngModel)]="userRating"></p-rating>
+        <div class="post-image-container">
+          @if (post.imagen_url) {
+            <img [src]="post.imagen_url" [alt]="post.titulo" style="width: 100%; height: 100%; object-fit: cover;">
+          } @else {
+            <i class="pi pi-image placeholder-icon"></i>
+          }
         </div>
-      </div>
 
-      <p-divider styleClass="post-divider"></p-divider>
+        <div class="post-content">
+          <div [innerHTML]="post.contenido"></div>
+          
+          <div class="post-rating-section">
+            <span class="rating-label">¿Qué te pareció esta noticia?</span>
+            <p-rating [(ngModel)]="post.mi_valoracion" (onRate)="calificar(post)"></p-rating>
+          </div>
+        </div>
 
-      <div class="comments-section">
-        <h4 class="comments-title"><i class="pi pi-comments"></i> Comentarios (0)</h4>
-        <div class="comments-list"></div>
-        <div class="new-comment-box">
-          <p-avatar label="BR" shape="circle" styleClass="current-user-avatar"></p-avatar>
-          <div class="input-wrapper">
-            <textarea pTextarea rows="2" placeholder="Escribe tu opinión sobre esta noticia..." class="comment-textarea"></textarea>
-            <div class="comment-actions">
-              <p-button label="Comentar" icon="pi pi-send" size="small" [rounded]="true"></p-button>
+        <p-divider styleClass="post-divider"></p-divider>
+
+        <div class="comments-section">
+          <h4 class="comments-title">
+            <i class="pi pi-comments"></i> Comentarios ({{ post.comentarios?.length || 0 }})
+          </h4>
+
+          <div class="comments-list">
+            @for (com of post.comentarios; track com.id) {
+              <div class="comment-item">
+                <p-avatar [label]="com.perfiles?.nombre?.substring(0,2) | uppercase" shape="circle" styleClass="comment-avatar"></p-avatar>
+                <div class="comment-body">
+                  <div class="comment-meta">
+                    <strong>{{ com.perfiles?.nombre }}</strong>
+                    <span class="comment-time">{{ com.creado_en | date:'shortTime' }}</span>
+                  </div>
+                  <p class="comment-text">{{ com.texto }}</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="new-comment-box">
+            <p-avatar [label]="userName().substring(0,2) | uppercase" shape="circle" styleClass="current-user-avatar"></p-avatar>
+            <div class="input-wrapper">
+              <textarea 
+                pTextarea 
+                rows="2" 
+                [ngModel]="comentarioTemporal()[post.id]"
+                (input)="onInputComment(post.id, $event)"
+                placeholder="Escribe tu opinión sobre esta noticia..." 
+                class="comment-textarea">
+              </textarea>
+              <div class="comment-actions">
+                <p-button label="Comentar" icon="pi pi-send" size="small" [rounded]="true" (onClick)="enviarComentario(post.id)"></p-button>
+              </div>
             </div>
           </div>
         </div>
+      </p-card>
+    } @empty {
+      <div style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <i class="pi pi-folder-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+        <p>No hay noticias publicadas para Wii U por ahora. ¡Es hora de desempolvar el GamePad!</p>
       </div>
-    </p-card>
+    }
   </div>
 </div>

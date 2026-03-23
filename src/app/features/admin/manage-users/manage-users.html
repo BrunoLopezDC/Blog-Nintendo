@@ -1,8 +1,10 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="admin-page">
   <div class="page-header">
     <div class="header-left">
       <h1><i class="pi pi-users"></i> Control de Usuarios</h1>
-      <p>Buscá usuarios, cambiá sus roles o suspendé cuentas problemáticas.</p>
+      <p>Buscá usuarios y gestioná los accesos a la plataforma.</p>
     </div>
   </div>
 
@@ -10,22 +12,22 @@
     <div class="table-toolbar">
       <div class="search-box">
         <i class="pi pi-search"></i>
-        <input pInputText type="text" [(ngModel)]="searchText" placeholder="Buscar por nombre o correo..." />
+        <input pInputText type="text" [(ngModel)]="searchText" placeholder="Buscar por nombre..." />
       </div>
     </div>
 
     <p-table 
-      [value]="users()" 
+      [value]="filteredUsers()" 
       [paginator]="true" 
-      [rows]="5" 
-      [rowsPerPageOptions]="[5, 10, 20]"
+      [rows]="10" 
       styleClass="p-datatable-sm modern-admin-table"
       responsiveLayout="scroll"
+      [loading]="isLoading()"
     >
       <ng-template #header>
         <tr>
           <th>Usuario</th>
-          <th>Correo Electrónico</th>
+          <th>Correo</th>
           <th class="text-center">Rol</th>
           <th class="text-center">Estado</th>
           <th>Registro</th>
@@ -37,35 +39,34 @@
         <tr class="table-row-hover">
           <td>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <p-avatar icon="pi pi-user" shape="circle" [style]="{'background-color': '#e5e7eb', 'color': '#4b5563'}"></p-avatar>
+              <p-avatar [label]="user.nombre.substring(0,2) | uppercase" shape="circle"></p-avatar>
               <strong>{{ user.nombre }}</strong>
             </div>
           </td>
-          <td class="text-muted">{{ user.correo }}</td>
+          <td class="text-muted">{{ user.correo || '---' }}</td>
           <td class="text-center">
             <p-tag [value]="user.rol" [severity]="getRoleSeverity(user.rol)"></p-tag>
           </td>
           <td class="text-center">
             <p-tag [value]="user.estado" [severity]="getStatusSeverity(user.estado)"></p-tag>
           </td>
-          <td class="text-muted">{{ user.fechaRegistro | date:'dd/MM/yyyy' }}</td>
+          <td class="text-muted">{{ user.fecha_registro | date:'dd/MM/yyyy' }}</td>
           <td class="text-center">
             <div class="action-buttons">
-              <p-button icon="pi pi-shield" severity="warn" [text]="true" [rounded]="true" pTooltip="Cambiar Rol"></p-button>
-              <p-button icon="pi pi-ban" severity="danger" [text]="true" [rounded]="true" pTooltip="Suspender Cuenta"></p-button>
+              <p-button 
+                [icon]="user.estado === 'Activo' ? 'pi pi-ban' : 'pi pi-check-circle'" 
+                [severity]="user.estado === 'Activo' ? 'danger' : 'success'" 
+                [text]="true" 
+                [rounded]="true" 
+                [pTooltip]="user.estado === 'Activo' ? 'Suspender' : 'Reactivar'" 
+                (onClick)="toggleUserStatus(user)">
+              </p-button>
             </div>
-          </td>
-        </tr>
-      </ng-template>
-
-      <ng-template #empty>
-        <tr>
-          <td colspan="6" class="empty-state">
-            <i class="pi pi-users"></i>
-            <p>No se encontraron usuarios.</p>
           </td>
         </tr>
       </ng-template>
     </p-table>
   </p-card>
 </div>
+
+<p-confirmdialog styleClass="modern-dialog"></p-confirmdialog>

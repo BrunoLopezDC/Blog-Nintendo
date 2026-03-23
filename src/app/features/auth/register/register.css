@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem; /* Le di un poco más de aire entre el logo y la tarjeta */
+  gap: 2rem; /* Aire entre logo y tarjeta */
 }
 
 .brand-section {
@@ -32,12 +32,12 @@
   justify-content: center;
 }
 
-/* LOGO MÁS GRANDE */
+/* LOGO MÁS GRANDE (igual que el login) */
 .auth-logo {
   height: 60px;
   width: auto;
   object-fit: contain;
-  transform: scale(3.1); /* Acá lo agrandamos un montón, podés subir a 2.5 o 3 si lo querés más bestia */
+  transform: scale(3.1); /* Imponente */
   transform-origin: center;
 }
 
@@ -55,7 +55,7 @@
 
 .auth-header {
   text-align: center;
-  margin-bottom: 2.5rem; /* Un poco más de espacio antes de los inputs */
+  margin-bottom: 2.5rem; /* Espacio antes de los inputs */
 }
 
 .auth-header h2 {
@@ -75,7 +75,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* Espacio extra para que el FloatLabel respire bien */
+  gap: 2rem; /* Espacio para que el FloatLabel respire */
 }
 
 .field {
@@ -92,7 +92,7 @@
   padding: 1rem;
   background-color: #0f172a !important; /* Fondo del input oscuro */
   border: 1px solid var(--border-color) !important;
-  color: var(--text-main) !important; /* TEXTO CLARO (chau letras negras) */
+  color: var(--text-main) !important; /* Texto claro */
 }
 
 /* Arreglando el color del label flotante */
@@ -114,11 +114,11 @@
 :host ::ng-deep .p-float-label input:focus ~ label,
 :host ::ng-deep .p-float-label input.p-filled ~ label {
   color: var(--nintendo-red) !important;
-  background-color: var(--card-bg) !important; /* Parchecito para que el texto corte la línea del input */
+  background-color: var(--card-bg) !important; /* Parchecito para que el texto corte la línea */
   padding: 0 0.25rem;
 }
 
-/* BOTÓN DE LOGIN */
+/* BOTÓN DE ACCIÓN (idéntico al login) */
 :host ::ng-deep .auth-btn {
   margin-top: 0.5rem;
   border-radius: 0.5rem !important;
@@ -151,14 +151,14 @@
   color: var(--text-muted);
 }
 
-.register-link {
-  color: #ff4d4d; /* Un rojo un poco más vibrante para que resalte en oscuro */
+.login-link {
+  color: #ff4d4d; /* Rojo vibrante para resaltar en oscuro */
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
-.register-link:hover {
+.login-link:hover {
   color: var(--nintendo-red);
   text-decoration: underline;
 }

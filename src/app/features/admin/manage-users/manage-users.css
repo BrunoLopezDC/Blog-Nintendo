@@ -1,108 +1,208 @@
 :host {
+  /* ==================== PALETA DE COLORES ==================== */
   --nintendo-red: #e60012;
-  --bg-app: #f5f5f5;
-  --bg-card: #ffffff;
-  --border-color: #e5e7eb;
-  --text-title: #1f2937;
-  --text-body: #4b5563;
-  --text-muted: #9ca3af;
+  --bg-app: #f1f5f9; /* Gris ultra suave para la página */
+  --bg-card: #ffffff; /* Blanco puro para las tarjetas */
+  --border-color: #e2e8f0;
+  --text-title: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
 }
 
-.admin-page {
-  padding: 1rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.admin-page { 
+  padding: 1rem 0; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.5rem; 
+  background-color: transparent;
 }
 
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.header-left h1 {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin: 0 0 0.25rem 0;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text-title);
-  letter-spacing: -0.025em;
-}
-
+/* ==================== ENCABEZADO ==================== */
+.page-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.header-left h1 { display: flex; align-items: center; gap: 0.6rem; margin: 0 0 0.25rem 0; font-size: 1.75rem; font-weight: 700; color: var(--text-title); letter-spacing: -0.025em; }
 .header-left h1 i { color: var(--nintendo-red); }
 .header-left p { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
 
-:host ::ng-deep .header-right .p-button {
-  background: var(--nintendo-red);
-  border: none;
-  font-weight: 600;
-}
+:host ::ng-deep .header-right .p-button { background: var(--nintendo-red); border: none; font-weight: 600; }
 :host ::ng-deep .header-right .p-button:hover { background: #c40010; }
 
-:host ::ng-deep .admin-card {
-  border-radius: 1rem;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+/* ==================== FIX: FORZAR BLANCO EN LA CARD PRINCIPAL ==================== */
+:host ::ng-deep .admin-card { 
+  border-radius: 1rem !important; 
+  border: 1px solid var(--border-color) !important; 
+  box-shadow: 0 4px 15px -3px rgba(0,0,0,0.05) !important; 
+  background-color: var(--bg-card) !important; 
 }
+:host ::ng-deep .admin-card .p-card-body { background-color: var(--bg-card) !important; padding: 1.5rem !important; }
+:host ::ng-deep .admin-card .p-card-content { padding: 0 !important; }
 
-.table-toolbar {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 1.5rem;
+/* ==================== FIX: BUSCADOR BLANCO ==================== */
+.table-toolbar { display: flex; justify-content: flex-start; margin-bottom: 1.5rem; }
+.search-box { position: relative; width: 100%; max-width: 350px; }
+.search-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); z-index: 2; }
+
+:host ::ng-deep .search-box input { 
+  width: 100%; 
+  padding-left: 2.5rem; 
+  border-radius: 2rem !important; 
+  border: 1px solid var(--border-color) !important; 
+  background-color: #ffffff !important;
+  color: var(--text-title) !important;
 }
+:host ::ng-deep .search-box input:focus { border-color: var(--nintendo-red) !important; box-shadow: 0 0 0 2px #fef2f2 !important; }
 
-.search-box {
-  position: relative;
-  width: 100%;
-  max-width: 350px;
-}
-
-.search-box i {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-}
-
-.search-box input {
-  width: 100%;
-  padding-left: 2.5rem;
-  border-radius: 2rem;
-  border: 1px solid var(--border-color);
-}
-
-.search-box input:focus { border-color: var(--nintendo-red); outline: none; }
-
-/* Tabla */
+/* Textos de la tabla */
 .post-info { display: flex; flex-direction: column; gap: 0.2rem; }
 .post-info strong { color: var(--text-title); font-size: 0.95rem; }
 .post-info small { color: var(--text-muted); font-size: 0.8rem; }
 .cat-label { font-weight: 600; color: var(--text-body); font-size: 0.85rem; }
 .text-center { text-align: center; }
 .text-muted { color: var(--text-muted); }
-
 .action-buttons { display: flex; gap: 0.25rem; justify-content: center; }
 
-:host ::ng-deep .modern-admin-table .p-datatable-thead > tr > th {
-  background: #f9fafb;
-  color: var(--text-body);
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--border-color);
-}
+/* ==================== FIX: TABLA BLANCA ==================== */
+:host ::ng-deep .modern-admin-table,
+:host ::ng-deep .modern-admin-table .p-datatable-wrapper,
+:host ::ng-deep .modern-admin-table table { background-color: #ffffff !important; }
+:host ::ng-deep .modern-admin-table .p-datatable-tbody > tr { background-color: #ffffff !important; }
+:host ::ng-deep .modern-admin-table.p-datatable-striped .p-datatable-tbody > tr:nth-child(even) { background-color: #f8fafc !important; }
+:host ::ng-deep .modern-admin-table .p-datatable-empty-message td { background-color: #ffffff !important; }
 
-:host ::ng-deep .modern-admin-table .p-datatable-tbody > tr > td { border-bottom: 1px solid #f3f4f6; }
-.table-row-hover:hover { background: #f8fafc !important; }
+:host ::ng-deep .modern-admin-table .p-datatable-thead > tr > th {
+  background: #f8fafc !important; color: var(--text-body) !important; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; border-bottom: 1px solid var(--border-color) !important;
+}
+:host ::ng-deep .modern-admin-table .p-datatable-tbody > tr > td { border-bottom: 1px solid #f1f5f9 !important; color: var(--text-body) !important; }
+.table-row-hover:hover { background: #f1f5f9 !important; }
 
 :host ::ng-deep .p-rating .p-rating-icon { color: #cbd5e1; font-size: 1rem; }
 :host ::ng-deep .p-rating .p-rating-icon.p-rating-icon-active { color: #f59e0b; }
 
 .empty-state { text-align: center; padding: 3rem !important; color: var(--text-muted); }
 .empty-state i { font-size: 2.5rem; margin-bottom: 0.5rem; color: #cbd5e1; }
+
+/* ==================== FIX: PAGINADOR BLANCO ==================== */
+:host ::ng-deep .p-paginator-bottom,
+:host ::ng-deep .p-paginator,
+:host ::ng-deep p-table .p-paginator {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-top: 1px solid var(--border-color) !important;
+  padding: 1rem 0 0 0 !important;
+  color: var(--text-body) !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-current {
+  color: var(--text-muted) !important;
+  background-color: transparent !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page,
+:host ::ng-deep .p-paginator .p-paginator-first,
+:host ::ng-deep .p-paginator .p-paginator-prev,
+:host ::ng-deep .p-paginator .p-paginator-next,
+:host ::ng-deep .p-paginator .p-paginator-last {
+  background-color: transparent !important;
+  color: var(--text-muted) !important;
+  font-weight: 500 !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:not(.p-highlight):hover,
+:host ::ng-deep .p-paginator .p-paginator-first:not(.p-disabled):hover,
+:host ::ng-deep .p-paginator .p-paginator-prev:not(.p-disabled):hover,
+:host ::ng-deep .p-paginator .p-paginator-next:not(.p-disabled):hover,
+:host ::ng-deep .p-paginator .p-paginator-last:not(.p-disabled):hover {
+  background-color: #f1f5f9 !important;
+  color: var(--text-title) !important;
+}
+
+:host ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: #fef2f2 !important; 
+  color: var(--nintendo-red) !important;
+  font-weight: 700 !important;
+}
+
+:host ::ng-deep .p-paginator .p-select,
+:host ::ng-deep .p-paginator .p-dropdown {
+  background-color: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0.5rem !important;
+}
+
+:host ::ng-deep .p-paginator .p-select .p-select-label,
+:host ::ng-deep .p-paginator .p-dropdown .p-dropdown-label,
+:host ::ng-deep .p-paginator .p-select .p-select-dropdown,
+:host ::ng-deep .p-paginator .p-dropdown .p-dropdown-trigger {
+  color: var(--text-body) !important;
+}
+
+:host ::ng-deep .p-select-panel,
+:host ::ng-deep .p-dropdown-panel {
+  background-color: #ffffff !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0.5rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+:host ::ng-deep .p-select-item,
+:host ::ng-deep .p-dropdown-item { color: var(--text-body) !important; background-color: transparent !important; }
+:host ::ng-deep .p-select-item:hover,
+:host ::ng-deep .p-dropdown-item:hover { background-color: #f1f5f9 !important; color: var(--text-title) !important; }
+
+/* ==================== MODO OSCURO PARA MODALES ==================== */
+:host ::ng-deep .modern-dialog .p-dialog-header { border-bottom: 1px solid #1e293b; padding: 1.5rem; background-color: #0f172a !important; }
+:host ::ng-deep .modern-dialog .p-dialog-header .p-dialog-title { font-weight: 700; color: #f8fafc !important; }
+:host ::ng-deep .modern-dialog .p-dialog-content { padding: 1.5rem; background-color: #0f172a !important; }
+:host ::ng-deep .modern-dialog .p-dialog-footer { border-top: 1px solid #1e293b; padding: 1.25rem 1.5rem; background-color: #0f172a !important; }
+:host ::ng-deep .modern-dialog .p-dialog-header-icon { color: #94a3b8 !important; }
+
+.dialog-form { display: flex; flex-direction: column; gap: 1.2rem; }
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field-label-top { font-size: 0.85rem; color: #94a3b8; font-weight: 600; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+:host ::ng-deep .modern-dialog input { width: 100%; border-radius: 0.5rem; background-color: #1e293b !important; color: #f8fafc !important; border: 1px solid #334155 !important; }
+:host ::ng-deep .modern-dialog input:focus { border-color: var(--nintendo-red) !important; }
+:host ::ng-deep .modern-dialog .select-full { width: 100%; border-radius: 0.5rem; background-color: #1e293b !important; border: 1px solid #334155 !important; }
+:host ::ng-deep .modern-dialog .select-full .p-select-label { color: #f8fafc !important; }
+
+/* FIX: File Upload Oscuro */
+:host ::ng-deep .custom-fileupload .p-button { background-color: #1e293b !important; border: 1px dashed #475569 !important; color: #cbd5e1 !important; width: 100%; justify-content: center; transition: all 0.2s; }
+:host ::ng-deep .custom-fileupload .p-button:hover { background-color: #334155 !important; color: #ffffff !important; border-style: solid !important; border-color: var(--nintendo-red) !important; }
+
+/* Fix Editor Oscuro */
+:host ::ng-deep .p-editor-container .p-editor-toolbar { background: #1e293b !important; border-color: #334155 !important; border-radius: 0.5rem 0.5rem 0 0; }
+:host ::ng-deep .p-editor-container .p-editor-content { background: #0f172a !important; border-color: #334155 !important; color: #f8fafc !important; border-radius: 0 0 0.5rem 0.5rem; }
+:host ::ng-deep .ql-picker-label { color: #94a3b8 !important; }
+
+/* ==================== ESTADÍSTICAS PROFESIONALES ==================== */
+.pro-stats-container { display: flex; flex-direction: column; gap: 1.5rem; }
+.stats-post-title { margin: 0; font-size: 1.15rem; color: #f8fafc; font-weight: 600; border-bottom: 1px solid #1e293b; padding-bottom: 1rem; line-height: 1.4; }
+
+.pro-stats-grid { display: flex; flex-direction: column; gap: 1rem; }
+
+.stat-box {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background-color: #1e293b;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #334155;
+}
+
+.icon-circle {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 1.25rem;
+}
+.icon-circle.gold { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.icon-circle.blue { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.icon-circle.green { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+.stat-info { display: flex; flex-direction: column; gap: 0.2rem; }
+.stat-value { font-size: 1.25rem; font-weight: 800; color: #ffffff; }
+.stat-label { font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }

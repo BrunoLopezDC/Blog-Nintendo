@@ -1,0 +1,76 @@
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <div class="brand-section">
+      <img src="assets/images/logo-noticias-nintendo.png" alt="Logo Noticias Nintendo" class="auth-logo" />
+    </div>
+
+    <p-card styleClass="auth-card">
+      <div class="auth-header">
+        <h2>Crear Cuenta</h2>
+        <p>Sumate a la comunidad más grande de Nintendo</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
+        
+        <div class="field">
+          <p-floatLabel>
+            <input id="nombre" type="text" pInputText formControlName="nombre" class="w-full" />
+            <label for="nombre">Nombre Completo</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="field">
+          <p-floatLabel>
+            <input id="email" type="email" pInputText formControlName="email" class="w-full" />
+            <label for="email">Correo Electrónico</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="field">
+          <p-floatLabel>
+            <p-password 
+              id="password"
+              formControlName="password" 
+              [toggleMask]="true" 
+              [feedback]="true" 
+              promptLabel="Elegí una contraseña" 
+              weakLabel="Débil" 
+              mediumLabel="Media" 
+              strongLabel="Fuerte"
+              styleClass="w-full" 
+              inputStyleClass="w-full p-password-input">
+            </p-password>
+            <label for="password">Contraseña (min. 6 carac.)</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="field">
+          <p-floatLabel>
+            <p-password 
+              id="confirmPassword"
+              formControlName="confirmPassword" 
+              [toggleMask]="true" 
+              [feedback]="false"
+              styleClass="w-full" 
+              inputStyleClass="w-full p-password-input">
+            </p-password>
+            <label for="confirmPassword">Confirmar Contraseña</label>
+          </p-floatLabel>
+        </div>
+
+        <p-button 
+          type="submit" 
+          label="Registrarse" 
+          icon="pi pi-user-plus" 
+          styleClass="w-full p-button-danger auth-btn" 
+          [disabled]="registerForm.invalid">
+        </p-button>
+
+      </form>
+
+      <div class="auth-footer">
+        <p>¿Ya tienes cuenta? <a routerLink="/login" class="login-link">Inicia sesión acá</a></p>
+      </div>
+    </p-card>
+  </div>
+</div>

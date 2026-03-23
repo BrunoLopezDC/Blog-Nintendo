@@ -1,11 +1,13 @@
+<p-toast position="top-right"></p-toast>
+
 <div class="admin-page">
   <div class="page-header">
     <div class="header-left">
       <h1><i class="pi pi-file-edit"></i> Gestión de Posts</h1>
-      <p>Administrá las noticias, revisá sus estadísticas y creá nuevo contenido.</p>
+      <p>Administrá las noticias y subí portadas a la nube.</p>
     </div>
     <div class="header-right">
-      <p-button label="Nuevo Post" icon="pi pi-plus" [rounded]="true"></p-button>
+      <p-button label="Nuevo Post" icon="pi pi-plus" [rounded]="true" (onClick)="openNew()" [loading]="isLoading()"></p-button>
     </div>
   </div>
 
@@ -13,56 +15,41 @@
     <div class="table-toolbar">
       <div class="search-box">
         <i class="pi pi-search"></i>
-        <input pInputText type="text" [(ngModel)]="searchText" placeholder="Buscar por título o categoría..." />
+        <input pInputText type="text" [(ngModel)]="searchText" placeholder="Buscar por título, categoría o estado..." />
       </div>
     </div>
 
-    <p-table 
-      [value]="posts()" 
-      [paginator]="true" 
-      [rows]="5" 
-      [rowsPerPageOptions]="[5, 10, 20]"
-      styleClass="p-datatable-sm modern-admin-table"
-      responsiveLayout="scroll"
-    >
+    <p-table [value]="filteredPosts()" [paginator]="true" [rows]="10" styleClass="p-datatable-sm modern-admin-table" [loading]="isLoading()">
       <ng-template #header>
         <tr>
+          <th>Portada</th>
           <th>Título</th>
           <th>Categoría</th>
           <th class="text-center">Estado</th>
-          <th class="text-center">Calificación</th>
-          <th class="text-center"><i class="pi pi-comments" pTooltip="Comentarios"></i></th>
+          <th class="text-center">Rating</th>
           <th class="text-center">Acciones</th>
         </tr>
       </ng-template>
 
       <ng-template #body let-post>
         <tr class="table-row-hover">
+          <td><img [src]="post.imagen_url || 'assets/images/no-image.png'" alt="Portada" class="table-img"></td>
           <td>
             <div class="post-info">
               <strong>{{ post.titulo }}</strong>
-              <small>{{ post.fecha | date:'dd MMM yyyy' }}</small>
+              <small>{{ post.creado_en | date:'dd/MM/yyyy' }}</small>
             </div>
           </td>
           <td><span class="cat-label">{{ post.categoria }}</span></td>
+          <td class="text-center"><p-tag [value]="post.estado" [severity]="getSeverity(post.estado)"></p-tag></td>
           <td class="text-center">
-            <p-tag [value]="post.estado" [severity]="getSeverity(post.estado)"></p-tag>
-          </td>
-          <td class="text-center">
-            @if (post.estado === 'Publicado') {
-              <p-rating [(ngModel)]="post.rating" [readonly]="true"></p-rating>
-            } @else {
-              <span class="text-muted">-</span>
-            }
-          </td>
-          <td class="text-center">
-            <p-tag [value]="post.comentarios.toString()" severity="info" [rounded]="true"></p-tag>
+             <p-rating [(ngModel)]="post.promedioRating" [readonly]="true"></p-rating>
           </td>
           <td class="text-center">
             <div class="action-buttons">
-              <p-button icon="pi pi-pencil" severity="info" [text]="true" [rounded]="true" pTooltip="Editar"></p-button>
-              <p-button icon="pi pi-chart-line" severity="success" [text]="true" [rounded]="true" pTooltip="Ver Estadísticas detalladas"></p-button>
-              <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" pTooltip="Eliminar"></p-button>
+              <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" (onClick)="editPost(post)" pTooltip="Editar"></p-button>
+              <p-button icon="pi pi-chart-line" severity="success" [text]="true" [rounded]="true" (onClick)="viewStats(post)" pTooltip="Estadísticas"></p-button>
+              <p-button icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true" (onClick)="deletePost(post)" pTooltip="Eliminar"></p-button>
             </div>
           </td>
         </tr>
@@ -71,11 +58,68 @@
       <ng-template #empty>
         <tr>
           <td colspan="6" class="empty-state">
-            <i class="pi pi-folder-open"></i>
-            <p>No hay posts creados aún.</p>
+            <i class="pi pi-file-excel"></i>
+            <p>No se encontraron noticias con esa búsqueda.</p>
           </td>
         </tr>
       </ng-template>
     </p-table>
   </p-card>
 </div>
+
+<p-dialog [(visible)]="statsDialog" header="Métricas de Rendimiento" [modal]="true" styleClass="modern-dialog stats-dialog" [style]="{width: '450px'}">
+  <div class="pro-stats-container">
+    <h3 class="stats-post-title">{{ selectedStats.titulo }}</h3>
+    
+    <div class="pro-stats-grid">
+      <div class="stat-box">
+        <div class="icon-circle gold"><i class="pi pi-star-fill"></i></div>
+        <div class="stat-info">
+          <span class="stat-value">{{ selectedStats.promedioRating || '0.0' }} / 5</span>
+          <span class="stat-label">Calificación Media</span>
+        </div>
+      </div>
+
+      <div class="stat-box">
+        <div class="icon-circle blue"><i class="pi pi-comments"></i></div>
+        <div class="stat-info">
+          <span class="stat-value">{{ selectedStats.totalComentarios || 0 }}</span>
+          <span class="stat-label">Comentarios Totales</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog [(visible)]="postDialog" [header]="isEditing() ? 'Editar Noticia' : 'Nueva Noticia'" [modal]="true" styleClass="modern-dialog" [style]="{width: '850px'}">
+  <div class="dialog-form">
+    <div class="field">
+      <label class="field-label-top">Portada</label>
+      <p-fileupload mode="basic" chooseLabel="Elegir" accept="image/*" (onSelect)="onImageUpload($event)" styleClass="custom-fileupload"></p-fileupload>
+    </div>
+    <div class="field">
+      <label class="field-label-top">Título</label>
+      <input pInputText type="text" [(ngModel)]="currentPost.titulo" />
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label class="field-label-top">Categoría</label>
+        <p-select [(ngModel)]="currentPost.categoria" [options]="categorias" optionLabel="label" optionValue="value" styleClass="select-full" appendTo="body"></p-select>
+      </div>
+      <div class="field">
+        <label class="field-label-top">Estado</label>
+        <p-select [(ngModel)]="currentPost.estado" [options]="estados" optionLabel="label" optionValue="value" styleClass="select-full" appendTo="body"></p-select>
+      </div>
+    </div>
+    <div class="field">
+      <label class="field-label-top">Cuerpo</label>
+      <p-editor [(ngModel)]="currentPost.contenido" [style]="{ height: '300px' }"></p-editor>
+    </div>
+  </div>
+  <ng-template #footer>
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [text]="true" (onClick)="postDialog.set(false)"></p-button>
+    <p-button label="Guardar" icon="pi pi-save" (onClick)="savePost()" [loading]="isLoading()"></p-button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmdialog styleClass="modern-dialog"></p-confirmdialog>

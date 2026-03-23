@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
+import { AuthRepository } from '../../../../data/repositories/auth.repository';
 
 interface MenuItem {
   label: string;
@@ -19,46 +22,62 @@ interface MenuItem {
     CommonModule,
     RouterModule,
     RouterOutlet,
+    FormsModule,
     RippleModule,
-    TooltipModule
+    TooltipModule,
+    InputTextModule
   ],
   templateUrl: './user-layout.html',
   styleUrls: ['./user-layout.css']
 })
-export class UserLayoutComponent {
-  userName = 'Bruni';
+export class UserLayoutComponent implements OnInit {
+  userName = 'Cargando...';
   isSidebarCollapsed = false;
+  searchQuery = '';
 
   internalMenu: MenuItem[] = [
-  { label: 'Dashboard', icon: 'pi pi-home', routerLink: '/dashboard' },
-  { label: 'Nintendo Switch 2', icon: 'pi pi-sparkles', routerLink: '/posts-nintendo-switch-2' },
-  { label: 'Nintendo Switch', icon: 'pi pi-tablet', routerLink: '/posts-nintendo-switch' },
-  { label: 'Wii U', icon: 'pi pi-clone', routerLink: '/posts-wii-u' }, 
-  { label: 'Retro', icon: 'pi pi-history', routerLink: '/posts-retro' } 
-];
-
-  externalMenu: MenuItem[] = [
-    {
-      label: 'Nintendo Oficial',
-      icon: 'pi pi-globe',
-      url: 'https://www.nintendo.com',
-      target: '_blank'
-    },
-    {
-      label: 'Nintendo España',
-      icon: 'pi pi-compass',
-      url: 'https://www.nintendo.es',
-      target: '_blank'
-    }
+    { label: 'Últimas Noticias', icon: 'pi pi-home', routerLink: '/dashboard' },
+    { label: 'Nintendo Switch 2', icon: 'pi pi-sparkles', routerLink: '/posts-nintendo-switch-2' },
+    { label: 'Nintendo Switch', icon: 'pi pi-tablet', routerLink: '/posts-nintendo-switch' },
+    { label: 'Wii U', icon: 'pi pi-clone', routerLink: '/posts-wii-u' },
+    { label: 'Retro', icon: 'pi pi-history', routerLink: '/posts-retro' }
   ];
 
-  constructor(private readonly router: Router) {}
+  externalMenu: MenuItem[] = [
+    { label: 'Nintendo Oficial', icon: 'pi pi-globe', url: 'https://www.nintendo.com', target: '_blank' },
+    { label: 'Nintendo España', icon: 'pi pi-compass', url: 'https://www.nintendo.es', target: '_blank' }
+  ];
+
+  constructor(
+    private readonly router: Router,
+    private readonly authRepo: AuthRepository // Inyectamos el repositorio
+  ) {}
+
+  async ngOnInit() {
+    // Buscamos al usuario logueado
+    const user = await this.authRepo.obtenerUsuarioActual();
+    if (user) {
+      const { data } = await this.authRepo.obtenerPerfil(user.id);
+      if (data) {
+        this.userName = data.nombre; // Seteamos el nombre del usuario
+      }
+    }
+  }
 
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
-  logout(): void {
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
+      this.searchQuery = ''; 
+    }
+  }
+
+  async logout(): Promise<void> {
+    // Cerramos sesión de verdad
+    await this.authRepo.logout();
     this.router.navigate(['/login']);
   }
 }

@@ -1,29 +1,104 @@
 :host {
-  --admin-primary: #111827;
-  --admin-primary-light: #eef2ff;
-  --bg-main: #f8fafc;
+  --admin-primary: #0f172a; /* Slate 900 - Oscuro y elegante */
+  --admin-accent: #6366f1;  /* Indigo 500 - Color activo profesional */
+  --admin-accent-light: #e0e7ff; /* Indigo 100 */
+  --bg-main: #f8fafc; /* Fondo gris ultra suave */
   --bg-sidebar: #ffffff;
-  --text-main: #1f2937;
-  --text-muted: #6b7280;
-  --border-color: #e5e7eb;
+  --text-main: #1e293b; 
+  --text-muted: #64748b; 
+  --border-color: #e2e8f0; 
 }
 
-.layout-container { min-height: 100vh; display: flex; flex-direction: column; }
+.layout-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
+/* ==================== HEADER ADMIN ==================== */
 .layout-header {
   height: 64px;
   background: var(--admin-primary);
-  color: #fff;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
-.left, .right { display: flex; align-items: center; gap: .75rem; }
-.left h1 { margin: 0; font-size: 1.2rem; }
+.left, .right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
-.layout-body { display: flex; flex: 1; min-width: 0; overflow: hidden; }
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+.header-icon {
+  font-size: 1.25rem;
+  color: #38bdf8; /* Azul claro (Sky 400) para contrastar el escudo */
+}
+
+.left h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+}
+
+/* Píldora del perfil de Admin */
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-icon { font-size: 1rem; color: #94a3b8; }
+.user-greeting { font-size: 0.9rem; color: #e2e8f0; }
+.user-greeting strong { color: #ffffff; }
+
+/* Botón de Logout */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(239, 68, 68, 0.1); /* Fondo rojo muy transparente */
+  color: #ef4444; /* Rojo alerta */
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* ==================== LAYOUT BODY & SIDEBAR ==================== */
+.layout-body {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
 
 .desktop-sidebar {
   flex: 0 0 260px;
@@ -32,58 +107,117 @@
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  transition: all .25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 5;
 }
 
-.desktop-sidebar.collapsed { flex: 0 0 72px; width: 72px; }
+.desktop-sidebar.collapsed { flex: 0 0 76px; width: 76px; }
 
-.sidebar-toggle-wrapper { padding: 1rem; display: flex; justify-content: flex-end; }
+.sidebar-toggle-wrapper {
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .desktop-sidebar.collapsed .sidebar-toggle-wrapper { justify-content: center; }
 
 .collapse-btn {
-  width: 32px; height: 32px; border: 1px solid var(--border-color);
-  background: #fff; border-radius: 50%; cursor: pointer; color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.menu-section { padding: 0 .75rem; margin-bottom: 1rem; }
-.external-section { margin-top: auto; padding-bottom: 1rem; }
+.collapse-btn:hover {
+  background: var(--bg-main);
+  color: var(--admin-accent);
+  border-color: var(--admin-accent);
+}
+
+/* Secciones del Menú */
+.menu-section { padding: 1rem 0.75rem; }
 
 .section-title {
-  font-size: .75rem; text-transform: uppercase; letter-spacing: .04em;
-  color: var(--text-muted); margin: 0 0 .5rem .75rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem 0.75rem;
 }
 
-.clean-nav { display: flex; flex-direction: column; gap: .25rem; }
+.clean-nav { display: flex; flex-direction: column; gap: 0.35rem; }
 
+/* Enlaces del Menú */
 .sidebar-link {
-  display: flex; align-items: center; gap: .75rem;
-  padding: .75rem 1rem; border-radius: .5rem;
-  text-decoration: none; color: var(--text-main); font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
   border-left: 3px solid transparent;
 }
 
+.sidebar-link .icon {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.sidebar-link .label { flex: 1; }
+
 .sidebar-link:hover { background: var(--bg-main); }
-.sidebar-link .icon { color: var(--text-muted); }
+.sidebar-link:hover .icon { color: var(--admin-accent); }
 
+/* Enlace Activo */
 .active-link {
-  background: var(--admin-primary-light);
-  color: var(--admin-primary);
-  border-left-color: var(--admin-primary);
-  border-radius: 0 .5rem .5rem 0;
+  background: var(--admin-accent-light);
+  color: var(--admin-accent);
+  border-left-color: var(--admin-accent);
+  border-radius: 0 0.5rem 0.5rem 0;
 }
 
+.active-link .icon { color: var(--admin-accent); }
+
+/* Ajustes cuando está colapsado */
 .desktop-sidebar.collapsed .sidebar-link {
-  justify-content: center; padding: .75rem 0; border-left: none;
+  justify-content: center;
+  padding: 0.75rem 0;
+  border-radius: 0.5rem;
+  border-left: none;
 }
 
+.desktop-sidebar.collapsed .active-link {
+  border-left: none;
+  border-radius: 0.5rem;
+}
+
+/* ==================== MAIN CONTENT ==================== */
 .content {
-  flex: 1; min-width: 0; background: var(--bg-main);
-  overflow-y: auto; display: flex; flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-main);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.content-wrapper { flex: 1; padding: 1.5rem; }
-
-.logout-btn {
-  border: none; background: rgba(255,255,255,.15); color: #fff;
-  padding: .5rem 1rem; border-radius: 2rem; cursor: pointer;
+.content-wrapper {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1600px; /* Aumentado para aprovechar los monitores grandes que suelen usar los admins */
+  margin: 0 auto;
+  width: 100%;
 }

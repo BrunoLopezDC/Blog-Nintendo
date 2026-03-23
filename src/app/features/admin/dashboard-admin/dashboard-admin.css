@@ -1,0 +1,112 @@
+:host {
+  --nintendo-red: #e60012;
+  --text-title: #0f172a;
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+}
+
+.page-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.admin-feed {
+  width: 100%;
+  max-width: 850px;
+}
+
+/* Reutilizamos el estilo de tus cards de posts */
+:host ::ng-deep .full-post-card {
+  border-radius: 1.25rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.admin-welcome-header {
+  padding: 2.5rem 2.5rem 1.5rem 2.5rem;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.header-icon {
+  font-size: 1.8rem;
+  color: var(--nintendo-red);
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.admin-banner {
+  height: 200px;
+  background: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-subtitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-title);
+  margin-bottom: 1rem;
+}
+
+.admin-rules-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-rules-list li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.admin-rules-list li i {
+  color: var(--nintendo-red);
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.admin-rules-list li strong {
+  display: block;
+  color: var(--text-title);
+  margin-bottom: 0.1rem;
+}
+
+.admin-rules-list li div {
+  color: var(--text-body);
+  font-size: 0.95rem;
+}
+
+.admin-actions-footer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+:host ::ng-deep .admin-actions-footer .p-button {
+  background: var(--nintendo-red);
+  border: none;
+  padding: 0.75rem 2rem;
+  font-weight: 700;
+}

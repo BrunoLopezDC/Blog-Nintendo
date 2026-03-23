@@ -1,19 +1,52 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <app-input-field
-    label="Correo"
-    type="email"
-    id="email"
-    [control]="emailControl"
-    placeholder="Ingresa tu correo"
-  ></app-input-field>
+<p-toast position="top-right"></p-toast>
+<div class="auth-container">
+  <div class="auth-wrapper">
+    <div class="brand-section">
+      <img src="assets/images/logo-noticias-nintendo.png" alt="Logo Noticias Nintendo" class="auth-logo" />
+    </div>
 
-  <app-input-field
-    label="Contraseña"
-    type="password"
-    id="password"
-    [control]="passwordControl"
-    placeholder="Ingresa tu contraseña"
-  ></app-input-field>
+    <p-card styleClass="auth-card">
+      <div class="auth-header">
+        <h2>Iniciar Sesión</h2>
+        <p>¡Qué bueno verte de nuevo por acá!</p>
+      </div>
 
-  <button type="submit" [disabled]="loginForm.invalid">Iniciar sesión</button>
-</form>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+        
+        <div class="field">
+          <p-floatLabel>
+            <input id="email" type="email" pInputText formControlName="email" class="w-full" />
+            <label for="email">Correo Electrónico</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="field">
+          <p-floatLabel>
+            <p-password 
+              id="password"
+              formControlName="password" 
+              [toggleMask]="true" 
+              [feedback]="false"
+              styleClass="w-full" 
+              inputStyleClass="w-full p-password-input">
+            </p-password>
+            <label for="password">Contraseña</label>
+          </p-floatLabel>
+        </div>
+
+        <p-button 
+          type="submit" 
+          label="Ingresar" 
+          icon="pi pi-sign-in" 
+          styleClass="w-full p-button-danger auth-btn" 
+          [disabled]="loginForm.invalid">
+        </p-button>
+
+      </form>
+
+      <div class="auth-footer">
+        <p>¿No tienes cuenta? <a routerLink="/register" class="register-link">Registrate acá</a></p>
+      </div>
+    </p-card>
+  </div>
+</div>

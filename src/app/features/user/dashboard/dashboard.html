@@ -4,49 +4,83 @@
       <i class="pi pi-globe header-icon"></i>
       <h2>Últimas Noticias</h2>
     </div>
-    <p class="subtitle">Entérate de las novedades más recientes del mundo de Nintendo.</p>
+    <p class="subtitle">Entérate de las novedades de los últimos 15 días.</p>
   </header>
 
   <div class="posts-feed">
-    <p-card styleClass="full-post-card">
-      <div class="post-header">
-        <h3 class="post-title">Resumen del último Nintendo Direct</h3>
-        <div class="post-meta">
-          <p-tag value="Global" styleClass="category-tag"></p-tag>
-          <span class="post-date"><i class="pi pi-calendar"></i> 22 Mar 2026</span>
-          <span class="post-author"><i class="pi pi-user"></i> Admin</span>
-        </div>
-      </div>
-
-      <div class="post-image-container">
-        <i class="pi pi-image placeholder-icon"></i>
-      </div>
-
-      <div class="post-content">
-        <p>Ayer presenciamos uno de los eventos más esperados del año. El administrador publicará aquí el resumen completo con todos los anuncios.</p>
-        
-        <div class="post-rating-section">
-          <span class="rating-label">¿Qué te pareció esta noticia?</span>
-          <p-rating [(ngModel)]="userRating"></p-rating>
-        </div>
-      </div>
-
-      <p-divider styleClass="post-divider"></p-divider>
-
-      <div class="comments-section">
-        <h4 class="comments-title"><i class="pi pi-comments"></i> Comentarios (0)</h4>
-        <div class="comments-list">
+    @for (post of posts(); track post.id) {
+      <p-card styleClass="full-post-card">
+        <div class="post-header">
+          <h3 class="post-title">{{ post.titulo }}</h3>
+          <div class="post-meta">
+            <p-tag [value]="post.categoria" styleClass="category-tag"></p-tag>
+            <span class="post-date"><i class="pi pi-calendar"></i> {{ post.creado_en | date:'dd MMM yyyy' }}</span>
+            <span class="post-author"><i class="pi pi-user"></i> {{ post.perfiles?.nombre }}</span>
           </div>
-        <div class="new-comment-box">
-          <p-avatar label="BR" shape="circle" styleClass="current-user-avatar"></p-avatar>
-          <div class="input-wrapper">
-            <textarea pTextarea rows="2" placeholder="Escribe tu opinión sobre esta noticia..." class="comment-textarea"></textarea>
-            <div class="comment-actions">
-              <p-button label="Comentar" icon="pi pi-send" size="small" [rounded]="true"></p-button>
+        </div>
+
+        <div class="post-image-container">
+          @if (post.imagen_url) {
+            <img [src]="post.imagen_url" [alt]="post.titulo" class="post-main-img">
+          } @else {
+            <i class="pi pi-image placeholder-icon"></i>
+          }
+        </div>
+
+        <div class="post-content">
+          <div [innerHTML]="post.contenido"></div>
+          
+          <div class="post-rating-section">
+            <span class="rating-label">¿Qué te pareció esta noticia?</span>
+            <p-rating [(ngModel)]="post.mi_valoracion" (onRate)="calificar(post)"></p-rating>
+          </div>
+        </div>
+
+        <p-divider styleClass="post-divider"></p-divider>
+
+        <div class="comments-section">
+          <h4 class="comments-title">
+            <i class="pi pi-comments"></i> Comentarios ({{ post.comentarios?.length || 0 }})
+          </h4>
+          
+          <div class="comments-list">
+            @for (com of post.comentarios; track com.id) {
+              <div class="comment-item">
+                <p-avatar [label]="com.perfiles?.nombre?.substring(0,2) | uppercase" shape="circle" styleClass="comment-avatar"></p-avatar>
+                <div class="comment-body">
+                  <div class="comment-meta">
+                    <strong>{{ com.perfiles?.nombre }}</strong>
+                    <span class="comment-time">{{ com.creado_en | date:'shortTime' }}</span>
+                  </div>
+                  <p class="comment-text">{{ com.texto }}</p>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="new-comment-box">
+            <p-avatar [label]="userName().substring(0,2) | uppercase" shape="circle" styleClass="current-user-avatar"></p-avatar>
+            <div class="input-wrapper">
+              <textarea 
+                pTextarea 
+                [autoResize]="true"
+                [(ngModel)]="comentarioTemporal()[post.id]" 
+                (input)="updateTempComment(post.id, $event)"
+                placeholder="Escribe tu opinión..." 
+                class="comment-textarea">
+              </textarea>
+              <div class="comment-actions">
+                <p-button label="Comentar" icon="pi pi-send" size="small" [rounded]="true" (onClick)="enviarComentario(post.id)"></p-button>
+              </div>
             </div>
           </div>
         </div>
+      </p-card>
+    } @empty {
+      <div class="empty-state">
+        <i class="pi pi-info-circle"></i>
+        <p>No hay noticias recientes en los últimos 15 días.</p>
       </div>
-    </p-card>
+    }
   </div>
 </div>

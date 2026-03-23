@@ -1,20 +1,26 @@
 <div class="layout-container">
+  
   <header class="layout-header">
     <div class="left">
-      <i class="pi pi-shield header-icon"></i>
-      <h1>Panel de Administración</h1>
+      <div class="logo-wrapper">
+        <i class="pi pi-shield header-icon"></i>
+      </div>
+      <h1>Admin Control</h1>
     </div>
 
     <div class="right">
-      <span class="user-greeting">Hola, <strong>{{ adminName }}</strong></span>
-      <button class="logout-btn" pRipple (click)="logout()">
+      <div class="admin-profile">
+        <i class="pi pi-user profile-icon"></i>
+        <span class="user-greeting">Hola, <strong>{{ adminName }}</strong></span>
+      </div>
+      <button class="logout-btn" pRipple (click)="logout()" pTooltip="Cerrar sesión" tooltipPosition="bottom">
         <i class="pi pi-sign-out"></i>
-        <span>Salir</span>
       </button>
     </div>
   </header>
 
   <div class="layout-body">
+    
     <aside class="desktop-sidebar" [class.collapsed]="isSidebarCollapsed">
       <div class="sidebar-toggle-wrapper">
         <button
@@ -31,7 +37,7 @@
 
       <div class="menu-section">
         @if (!isSidebarCollapsed) {
-          <h3 class="section-title">Navegación</h3>
+          <h3 class="section-title">Panel Principal</h3>
         }
 
         <nav class="clean-nav">
@@ -41,39 +47,12 @@
               class="sidebar-link"
               [routerLink]="item.routerLink"
               routerLinkActive="active-link"
-              [routerLinkActiveOptions]="{ exact: true }"
               [pTooltip]="isSidebarCollapsed ? item.label : ''"
               tooltipPosition="right"
             >
               <i class="icon" [class]="item.icon"></i>
               @if (!isSidebarCollapsed) {
                 <span class="label">{{ item.label }}</span>
-              }
-            </a>
-          }
-        </nav>
-      </div>
-
-      <div class="menu-section external-section">
-        @if (!isSidebarCollapsed) {
-          <h3 class="section-title">Enlaces externos</h3>
-        }
-
-        <nav class="clean-nav">
-          @for (item of externalMenu; track item.label) {
-            <a
-              pRipple
-              class="sidebar-link external-link"
-              [href]="item.url"
-              [target]="item.target"
-              rel="noopener noreferrer"
-              [pTooltip]="isSidebarCollapsed ? item.label : ''"
-              tooltipPosition="right"
-            >
-              <i class="icon" [class]="item.icon"></i>
-              @if (!isSidebarCollapsed) {
-                <span class="label">{{ item.label }}</span>
-                <i class="pi pi-external-link external-indicator"></i>
               }
             </a>
           }
@@ -86,5 +65,6 @@
         <router-outlet></router-outlet>
       </div>
     </main>
+    
   </div>
 </div>

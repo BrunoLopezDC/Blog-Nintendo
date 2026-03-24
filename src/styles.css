@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+/* --- FIX PARA EL TEXTO DE LAS NOTICIAS --- */
+.post-content {
+  width: 100%;
+  overflow: hidden;
+}
+
+.post-content p, 
+.post-content span, 
+.post-content div {
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important; /* Fuerza el salto de línea si la palabra es muy larga */
+  max-width: 100%;
+}

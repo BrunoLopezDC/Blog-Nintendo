@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -31,7 +31,7 @@ interface MenuItem {
   styleUrls: ['./user-layout.css']
 })
 export class UserLayoutComponent implements OnInit {
-  userName = 'Cargando...';
+  userName = signal<string>('Cargando...'); // <--- Convertido a Signal
   isSidebarCollapsed = false;
   searchQuery = '';
 
@@ -44,22 +44,22 @@ export class UserLayoutComponent implements OnInit {
   ];
 
   externalMenu: MenuItem[] = [
-    { label: 'Nintendo Oficial', icon: 'pi pi-globe', url: 'https://www.nintendo.com', target: '_blank' },
-    { label: 'Nintendo España', icon: 'pi pi-compass', url: 'https://www.nintendo.es', target: '_blank' }
+    { label: 'Nintendo Oficial', icon: 'pi pi-globe', url: 'https://www.nintendo.com/es-mx/', target: '_blank' },
+    { label: 'Nintendo Latam', icon: 'pi pi-twitter', url: 'https://x.com/NintendoLatam', target: '_blank' },
+    { label: 'Nintendo eShop', icon: 'pi pi-shopping-bag', url: 'https://www.nintendo.com/es-mx/store/', target: '_blank' }
   ];
 
   constructor(
     private readonly router: Router,
-    private readonly authRepo: AuthRepository // Inyectamos el repositorio
+    private readonly authRepo: AuthRepository
   ) {}
 
   async ngOnInit() {
-    // Buscamos al usuario logueado
     const user = await this.authRepo.obtenerUsuarioActual();
     if (user) {
       const { data } = await this.authRepo.obtenerPerfil(user.id);
       if (data) {
-        this.userName = data.nombre; // Seteamos el nombre del usuario
+        this.userName.set(data.nombre); // <--- Actualizamos el valor del signal
       }
     }
   }
@@ -76,7 +76,6 @@ export class UserLayoutComponent implements OnInit {
   }
 
   async logout(): Promise<void> {
-    // Cerramos sesión de verdad
     await this.authRepo.logout();
     this.router.navigate(['/login']);
   }

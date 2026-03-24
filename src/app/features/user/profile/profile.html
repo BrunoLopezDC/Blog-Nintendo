@@ -1,0 +1,30 @@
+<p-toast position="top-right"></p-toast>
+
+<div class="profile-page">
+  <div class="profile-container">
+    <p-card styleClass="profile-card">
+      <div class="profile-header">
+        <p-avatar [label]="userName().substring(0,2) | uppercase" size="xlarge" shape="circle" styleClass="big-avatar"></p-avatar>
+        <h2>Mi Perfil</h2>
+        <p class="role-badge"><i class="pi pi-star-fill"></i> {{ userRole() }}</p>
+      </div>
+
+      <div class="profile-form">
+        <div class="field">
+          <label class="field-label-top"><i class="pi pi-envelope"></i> Correo Electrónico (Solo lectura)</label>
+          <input pInputText type="text" [value]="userEmail()" disabled class="input-disabled" />
+          <small class="text-muted">El correo está vinculado a tu cuenta de seguridad y no se puede modificar.</small>
+        </div>
+
+        <div class="field mt-4">
+          <label class="field-label-top"><i class="pi pi-user"></i> Nombre de Usuario</label>
+          <input pInputText type="text" [(ngModel)]="userName" placeholder="¿Cómo quieres que te llamemos?" />
+        </div>
+
+        <div class="action-buttons mt-5">
+          <p-button label="Guardar Cambios" icon="pi pi-save" [loading]="isLoading()" (onClick)="saveProfile()" styleClass="w-full"></p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

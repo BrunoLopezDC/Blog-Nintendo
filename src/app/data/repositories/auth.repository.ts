@@ -39,7 +39,22 @@ export class AuthRepository {
     return data.session?.user || null;
   }
 
+  async enviarMagicLink(email: string) {
+    return await this.supabase.client.auth.signInWithOtp({
+      email: email,
+      options: {
+        // Esto detecta automáticamente si estás en localhost o en Vercel
+        emailRedirectTo: window.location.origin + '/dashboard' 
+      }
+    });
+  }
+  
   async logout() {
     return await this.supabase.client.auth.signOut();
+  }
+
+  // ¡NUEVO! Escuchamos los cambios de sesión (el "timbre" del Magic Link)
+  escucharCambiosDeSesion(callback: (event: string, session: any) => void) {
+    return this.supabase.client.auth.onAuthStateChange(callback);
   }
 }

@@ -10,10 +10,7 @@ export class PostRepository {
   // ==========================================
   // 1. MÉTODOS DE ADMINISTRACIÓN (CRUD)
   // ==========================================
-
-  // Traer todos para la tabla del Admin
-async obtenerPosts() {
-    // Solo traemos los datos puros de Supabase
+  async obtenerPosts() {
     return await this.supabase.client
       .from('posts')
       .select(`
@@ -48,7 +45,6 @@ async obtenerPosts() {
       .eq('id', id);
   }
 
-  // Subida de imágenes al Storage
   async subirImagen(file: File) {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random()}-${Date.now()}.${fileExt}`;
@@ -70,8 +66,6 @@ async obtenerPosts() {
   // ==========================================
   // 2. MÉTODOS DE VISTA DE USUARIO (READ + JOINS)
   // ==========================================
-
-  // Dashboard: Últimos 15 días (Cualquier categoría)
   async obtenerPostsDashboard() {
     const hace15Dias = new Date();
     hace15Dias.setDate(hace15Dias.getDate() - 15);
@@ -80,10 +74,10 @@ async obtenerPosts() {
       .from('posts')
       .select(`
         *,
-        perfiles!posts_autor_id_fkey (nombre),
+        autor:perfiles!posts_autor_id_fkey (nombre),
         comentarios (
           id, texto, creado_en, 
-          perfiles!comentarios_usuario_id_fkey (nombre)
+          autor_comentario:perfiles!comentarios_usuario_id_fkey (nombre)
         ),
         calificaciones (valor)
       `)
@@ -92,16 +86,15 @@ async obtenerPosts() {
       .order('id', { ascending: false });
   }
 
-  // Categorías Específicas: Wii U, Switch, etc. (Sin límite de días)
   async obtenerPostsPorCategoria(categoria: string) {
     return await this.supabase.client
       .from('posts')
       .select(`
         *,
-        perfiles!posts_autor_id_fkey (nombre),
+        autor:perfiles!posts_autor_id_fkey (nombre),
         comentarios (
           id, texto, creado_en, 
-          perfiles!comentarios_usuario_id_fkey (nombre)
+          autor_comentario:perfiles!comentarios_usuario_id_fkey (nombre)
         ),
         calificaciones (valor)
       `)
@@ -110,14 +103,16 @@ async obtenerPosts() {
       .order('id', { ascending: false });
   }
 
-  // Buscador Global (Busca en título o contenido)
   async buscarPosts(termino: string) {
     return await this.supabase.client
       .from('posts')
       .select(`
         *,
-        perfiles!posts_autor_id_fkey (nombre),
-        comentarios (id, texto, creado_en, perfiles!comentarios_usuario_id_fkey(nombre)),
+        autor:perfiles!posts_autor_id_fkey (nombre),
+        comentarios (
+          id, texto, creado_en, 
+          autor_comentario:perfiles!comentarios_usuario_id_fkey (nombre)
+        ),
         calificaciones (valor)
       `)
       .eq('estado', 'Publicado')
@@ -128,7 +123,6 @@ async obtenerPosts() {
   // ==========================================
   // 3. INTERACCIONES (COMENTARIOS Y RATING)
   // ==========================================
-
   async agregarComentario(postId: number, usuarioId: string, texto: string) {
     return await this.supabase.client
       .from('comentarios')

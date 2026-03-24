@@ -33,7 +33,8 @@ export const routes: Routes = [
     loadComponent: () => import('./features/user/layout/user-layout/user-layout').then((m) => m.UserLayoutComponent),
     children: [
       { path: 'dashboard', loadComponent: () => import('./features/user/dashboard/dashboard').then((m) => m.Dashboard) },
-      { path: 'search', loadComponent: () => import('./features/user/search-results/search-results').then((m) => m.SearchResults) }, // <--- ¡NUEVA RUTA!
+      { path: 'profile', loadComponent: () => import('./features/user/profile/profile').then((m) => m.ProfileComponent) }, // <--- ¡NUEVA RUTA DE PERFIL!
+      { path: 'search', loadComponent: () => import('./features/user/search-results/search-results').then((m) => m.SearchResults) }, 
       { path: 'posts-nintendo-switch-2', loadComponent: () => import('./features/user/posts-nintendo-switch-2/posts-nintendo-switch-2').then((m) => m.PostsNintendoSwitch2) },
       { path: 'posts-nintendo-switch', loadComponent: () => import('./features/user/posts-nintendo-switch/posts-nintendo-switch').then((m) => m.PostsNintendoSwitch) },
       { path: 'posts-wii-u', loadComponent: () => import('./features/user/posts-wii-u/posts-wii-u').then((m) => m.PostsWiiU) },

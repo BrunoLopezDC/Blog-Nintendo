@@ -13,6 +13,8 @@ import { AvatarModule } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog'; // ¡NUEVO!
+import { SelectModule } from 'primeng/select'; // ¡NUEVO!
 
 // Repositorios
 import { UserRepository } from '../../../data/repositories/user.repository';
@@ -24,7 +26,7 @@ import { AuthRepository } from '../../../data/repositories/auth.repository';
   imports: [
     CommonModule, FormsModule, TableModule, ButtonModule, TagModule,
     TooltipModule, InputTextModule, CardModule, AvatarModule,
-    ConfirmDialogModule, ToastModule
+    ConfirmDialogModule, ToastModule, DialogModule, SelectModule // Agregados acá también
   ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './manage-users.html',
@@ -35,6 +37,14 @@ export class ManageUsers implements OnInit {
   users = signal<any[]>([]);
   isLoading = signal<boolean>(false);
   currentUserId: string = '';
+
+  // Variables para la edición
+  userDialog = signal<boolean>(false);
+  currentUser: any = {};
+  roles = [
+    { label: 'Usuario', value: 'Usuario' },
+    { label: 'Admin', value: 'Admin' }
+  ];
 
   filteredUsers = computed(() => {
     const term = this.searchText().toLowerCase();
@@ -52,7 +62,6 @@ export class ManageUsers implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // Usamos el repositorio limpio que ya tenías creado
     const user = await this.authRepo.obtenerUsuarioActual();
     if (user) {
       this.currentUserId = user.id;
@@ -103,5 +112,34 @@ export class ManageUsers implements OnInit {
         }
       }
     });
+  }
+
+  // ¡NUEVO! Abre el modal con los datos del usuario
+  editUser(user: any) {
+    this.currentUser = { ...user };
+    this.userDialog.set(true);
+  }
+
+  // ¡NUEVO! Guarda los cambios de Nombre y Rol
+  async saveUser() {
+    if (!this.currentUser.nombre || this.currentUser.nombre.trim() === '') {
+      this.messageService.add({ severity: 'warn', summary: 'Atención', detail: 'El nombre no puede estar vacío' });
+      return;
+    }
+
+    this.isLoading.set(true);
+    const { error } = await this.userRepo.actualizarPerfil(this.currentUser.id, {
+      nombre: this.currentUser.nombre,
+      rol: this.currentUser.rol
+    });
+
+    if (!error) {
+      this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Perfil modificado con éxito' });
+      this.userDialog.set(false);
+      this.cargarUsuarios();
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar el perfil' });
+    }
+    this.isLoading.set(false);
   }
 }

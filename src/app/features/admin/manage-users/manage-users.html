@@ -53,6 +53,8 @@
           <td class="text-muted">{{ user.fecha_registro | date:'dd/MM/yyyy' }}</td>
           <td class="text-center">
             <div class="action-buttons">
+              <p-button icon="pi pi-pencil" severity="info" [text]="true" [rounded]="true" pTooltip="Editar" (onClick)="editUser(user)"></p-button>
+
               <p-button 
                 [icon]="user.estado === 'Activo' ? 'pi pi-ban' : 'pi pi-check-circle'" 
                 [severity]="user.estado === 'Activo' ? 'danger' : 'success'" 
@@ -68,5 +70,24 @@
     </p-table>
   </p-card>
 </div>
+
+<p-dialog [(visible)]="userDialog" header="Editar Perfil de Usuario" [modal]="true" styleClass="modern-dialog" [style]="{width: '450px'}">
+  <div class="dialog-form">
+    <div class="field">
+      <label class="field-label-top">Nombre del Usuario</label>
+      <input pInputText type="text" [(ngModel)]="currentUser.nombre" placeholder="Ej. Juan Pérez" />
+    </div>
+    
+    <div class="field">
+      <label class="field-label-top">Rol en el Sistema</label>
+      <p-select [(ngModel)]="currentUser.rol" [options]="roles" optionLabel="label" optionValue="value" styleClass="select-full" appendTo="body"></p-select>
+    </div>
+  </div>
+  
+  <ng-template #footer>
+    <p-button label="Cancelar" icon="pi pi-times" severity="secondary" [text]="true" (onClick)="userDialog.set(false)"></p-button>
+    <p-button label="Guardar Cambios" icon="pi pi-save" (onClick)="saveUser()" [loading]="isLoading()"></p-button>
+  </ng-template>
+</p-dialog>
 
 <p-confirmdialog styleClass="modern-dialog"></p-confirmdialog>

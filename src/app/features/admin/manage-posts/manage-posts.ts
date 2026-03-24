@@ -18,8 +18,9 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
-// Repositorio
+// Repositorios
 import { PostRepository } from '../../../data/repositories/post.repository';
+import { AuthRepository } from '../../../data/repositories/auth.repository';
 
 @Component({
   selector: 'app-manage-posts',
@@ -45,7 +46,6 @@ export class ManagePosts implements OnInit {
   selectedStats: any = {};
   posts = signal<any[]>([]);
 
-  // Buscador reactivo por título o categoría
   filteredPosts = computed(() => {
     const term = this.searchText().toLowerCase();
     return this.posts().filter(p => 
@@ -71,7 +71,8 @@ export class ManagePosts implements OnInit {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private postRepo: PostRepository
+    private postRepo: PostRepository,
+    private authRepo: AuthRepository 
   ) {}
 
   ngOnInit() {
@@ -126,34 +127,49 @@ export class ManagePosts implements OnInit {
     this.postDialog.set(true);
   }
 
+  // ¡ACÁ ESTÁ LA MAGIA ARREGLADA!
   async savePost() {
     if (!this.currentPost.titulo || !this.currentPost.categoria) {
         this.messageService.add({ severity: 'warn', summary: 'Atención', detail: 'Faltan campos' });
         return;
     }
+    
     this.isLoading.set(true);
+    
     try {
+      // 1. Pedimos la identificación del usuario EN ESTE EXACTO MOMENTO
+      const user = await this.authRepo.obtenerUsuarioActual();
+      if (!user) {
+        throw new Error("No estás logueado.");
+      }
+
       let finalImageUrl = this.currentPost.imagen_url;
       if (this.currentPost.imagenFile) {
         finalImageUrl = await this.postRepo.subirImagen(this.currentPost.imagenFile);
       }
-      const postData = {
+
+      // 2. Armamos los datos, forzando siempre el autor_id
+      const postData: any = {
         titulo: this.currentPost.titulo,
         categoria: this.currentPost.categoria,
         estado: this.currentPost.estado,
         contenido: this.currentPost.contenido,
-        imagen_url: finalImageUrl
+        imagen_url: finalImageUrl,
+        autor_id: user.id // <--- ¡AQUÍ ESTÁ LA GARANTÍA TOTAL!
       };
+
       if (this.isEditing()) {
         await this.postRepo.actualizarPost(this.currentPost.id, postData);
       } else {
         await this.postRepo.crearPost(postData);
       }
+      
       this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Noticia guardada' });
       this.postDialog.set(false);
       this.cargarPosts();
     } catch (err) {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo guardar' });
+      console.error(err);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo guardar la noticia' });
     } finally {
       this.isLoading.set(false);
     }

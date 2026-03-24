@@ -75,7 +75,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 2rem; /* Espacio extra para que el FloatLabel respire bien */
+  gap: 1.5rem; /* Achiqué un pelín el gap para que entren bien los dos botones */
 }
 
 .field {
@@ -120,7 +120,6 @@
 
 /* BOTÓN DE LOGIN */
 :host ::ng-deep .auth-btn {
-  margin-top: 0.5rem;
   border-radius: 0.5rem !important;
   padding: 0.85rem;
   font-weight: 600;
@@ -142,6 +141,44 @@
   color: #64748b !important;
   cursor: not-allowed !important;
 }
+
+/* NUEVO: ESTILOS PARA EL SEPARADOR Y MAGIC LINK */
+.magic-divider {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.magic-divider hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid var(--border-color);
+}
+
+.magic-divider span {
+  padding: 0 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+:host ::ng-deep .magic-btn {
+  border-radius: 0.5rem !important;
+  padding: 0.85rem;
+  font-weight: 600;
+  font-size: 1rem;
+  background-color: transparent !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-main) !important;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .magic-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--text-muted) !important;
+}
+
 
 /* FOOTER DEL CARD */
 .auth-footer {

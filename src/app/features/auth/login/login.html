@@ -36,10 +36,26 @@
 
         <p-button 
           type="submit" 
-          label="Ingresar" 
+          label="Ingresar con Contraseña" 
           icon="pi pi-sign-in" 
           styleClass="w-full p-button-danger auth-btn" 
-          [disabled]="loginForm.invalid">
+          [disabled]="loginForm.invalid"
+          [loading]="isLoadingPassword">
+        </p-button>
+
+        <div class="magic-divider">
+            <hr>
+            <span>O entrar seguro</span>
+            <hr>
+        </div>
+
+        <p-button 
+          type="button" 
+          label="Enviar Enlace Mágico" 
+          icon="pi pi-envelope" 
+          styleClass="w-full p-button-outlined magic-btn" 
+          (onClick)="sendMagicLink()"
+          [loading]="isLoadingMagicLink">
         </p-button>
 
       </form>

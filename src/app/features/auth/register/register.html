@@ -1,4 +1,4 @@
-<div class="auth-container">
+<p-toast position="top-right"></p-toast> <div class="auth-container">
   <div class="auth-wrapper">
     <div class="brand-section">
       <img src="assets/images/logo-noticias-nintendo.png" alt="Logo Noticias Nintendo" class="auth-logo" />
@@ -63,8 +63,8 @@
           label="Registrarse" 
           icon="pi pi-user-plus" 
           styleClass="w-full p-button-danger auth-btn" 
-          [disabled]="registerForm.invalid">
-        </p-button>
+          [disabled]="registerForm.invalid"
+          [loading]="isLoading"> </p-button>
 
       </form>
 

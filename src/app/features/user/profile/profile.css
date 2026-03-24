@@ -1,0 +1,97 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 80vh;
+  padding: 2rem;
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Forzamos el color de la tarjeta a un blanco levemente grisáceo para que no deslumbre, con letras oscuras */
+::ng-deep .profile-card.p-card {
+  background-color: var(--surface-card, #fdfdfd) !important; 
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); /* Sombra un poco más marcada para darle profundidad */
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+::ng-deep .profile-card.p-card .p-card-body {
+  color: var(--text-color, #333333) !important; /* Aseguramos que el texto principal sea oscuro */
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.profile-header h2 {
+  margin: 1rem 0 0.25rem 0;
+  color: var(--text-color, #1a1a1a); /* Título bien oscuro */
+  font-weight: 700;
+}
+
+.big-avatar {
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+  background-color: var(--nintendo-red, #e60012);
+  color: white;
+}
+
+.role-badge {
+  color: var(--text-muted, #666666);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.role-badge i {
+  color: #f59e0b; 
+  margin-right: 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label-top {
+  font-weight: 600;
+  color: var(--text-color, #333333);
+  font-size: 0.9rem;
+}
+
+.field-label-top i {
+  margin-right: 4px;
+  color: var(--nintendo-red, #e60012);
+}
+
+/* MAGIA PARA EL INPUT BLOQUEADO: Le sacamos el negro y lo dejamos gris claro */
+::ng-deep .input-disabled.p-inputtext:disabled {
+  background-color: #f0f2f5 !important; 
+  color: #6c757d !important; 
+  border-color: #ced4da !important;
+  opacity: 1 !important; 
+  cursor: not-allowed;
+}
+
+/* Aseguramos que el input normal (el del nombre) tenga fondo blanco y letra negra */
+::ng-deep .profile-form .p-inputtext:not(:disabled) {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  border-color: #ced4da !important;
+}
+
+.text-muted {
+  color: var(--text-muted, #888888);
+  font-size: 0.8rem;
+}
+
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 2rem; }
+.w-full { width: 100%; }

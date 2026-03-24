@@ -22,4 +22,12 @@ export class UserRepository {
       .update({ estado: nuevoEstado })
       .eq('id', id);
   }
+
+  // ¡NUEVO! Actualizar datos del usuario (Nombre y Rol)
+  async actualizarPerfil(id: string, datos: { nombre: string, rol: string }) {
+    return await this.supabase.client
+      .from('perfiles')
+      .update(datos)
+      .eq('id', id);
+  }
 }
